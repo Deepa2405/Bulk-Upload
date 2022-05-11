@@ -1,0 +1,51 @@
+﻿@model BulkUpload
+@{
+    ViewData["Title"] = "Create";
+}
+
+<style>
+    .file_align {
+        width: 50%;
+        margin-left: 20%;
+        margin-top: 10%;
+    }
+
+    .button {
+        margin-left: 84%;
+        margin-top: 1%;
+    }
+</style>
+<div class="card file_align">
+    <div class="card-body" style="background-color: #b9e8ed;">
+        <div class="form-group">
+            @Html.LabelFor(e => e.File, "Choose any file")
+            @Html.TextBoxFor(e => e.File, new { @class = "form-control", @type = "file", @id = "bulk_upload" })
+            @Html.ValidationMessageFor(e => e.File, "", new { @style = "text-danger" })
+            <input type="button" id="btn_upload" value="Upload" class="btn btn-primary button" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btn_upload").on("click", function () {
+            var formdata = new FormData();
+            var file = document.getElementById("bulk_upload").files[0];
+            formdata.append("Uploadfile", file);
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Createfile","Bulkfile")",
+                data: formdata,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("Success");
+                },
+                error: function (data) {
+                    alert("Failed");
+                }
+            });
+        });
+    });
+</script>
